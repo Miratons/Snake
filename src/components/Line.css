@@ -1,0 +1,7 @@
+.line {
+    font-size: 0;
+}
+
+.line:last-child li {
+    border-bottom: 1px solid grey;
+}
