@@ -6,7 +6,7 @@ import Map from 'components/Map'
 render (
     <div>
         <h1>Hello World</h1>
-        <Map nbLine={10} nbCol={10} />
+        <Map nbLine={10} nbCol={10} timer={1000} />
     </div>,
     document.querySelector('#mount')
 )
