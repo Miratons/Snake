@@ -14,3 +14,7 @@
 .square.snaked {
     background-color: grey;
 }
+
+.square.headSnake {
+    background-color: green;
+}

@@ -17,11 +17,11 @@ class Square extends Component {
     }
 
     getClassName() {
-        let className = "square "
-        //if (this.props.snake) {
-            let isSnaked = this.props.snake.find((pos) => pos.x === this.props.x && pos.y === this.props.y)
-            className += isSnaked ? 'snaked' : ''
-        //}
+        let className = "square"
+        let index = this.props.snake.findIndex((pos) => pos.x === this.props.x && pos.y === this.props.y)
+        if (index !== -1) {
+            className += index === 0 ? ' headSnake' : ' snaked'
+        }
         return className;
     }
 }
