@@ -4,19 +4,19 @@ export const getUpdateHeadSnake = (head, nextAxe, axe) => {
     let newAxe = nextAxe ? nextAxe : axe
     switch (newAxe) {
         case "top":
-            headSnake.x--
+            headSnake.y--
             break
         
         case "right":
-            headSnake.y++
+            headSnake.x++
             break
         
         case "bottom":
-            headSnake.x++
+            headSnake.y++
             break
 
         case "left":
-            headSnake.y--
+            headSnake.x--
             break
         
         default:

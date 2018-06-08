@@ -1,5 +1,6 @@
 .line {
     font-size: 0;
+    padding: 0px;
 }
 
 .line:last-child li {

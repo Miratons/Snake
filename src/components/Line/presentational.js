@@ -13,7 +13,7 @@ class Line extends Component {
     render() {
         var squares = [];
         for (let i = 0; i < this.props.nbCol; i++) {
-            squares.push(<Square key={i} x={this.props.x} y={i} />);
+            squares.push(<Square key={i} x={i} y={this.props.y} />);
         }
 
         return (
@@ -25,7 +25,7 @@ class Line extends Component {
 }
 
 Line.propTypes = {
-    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
     nbCol: PropTypes.number.isRequired,
 }
 

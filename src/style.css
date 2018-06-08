@@ -1,0 +1,8 @@
+body {
+    font-family: Calibri;
+}
+
+body #content {
+    width: 1024px;
+    margin: auto;
+}

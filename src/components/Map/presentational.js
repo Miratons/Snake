@@ -12,7 +12,7 @@ class Map extends Component {
     render() {
         var lines = [];
         for (let i = 0; i < this.props.nbLine; i++) {
-            lines.push(<Line key={i} x={i} />);
+            lines.push(<Line key={i} y={i} />);
         }
 
         return (

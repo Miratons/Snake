@@ -5,9 +5,11 @@ import { Provider } from 'react-redux'
 import Map from 'components/Map'
 import store from 'store'
 
+import './style.css'
+
 render (
-    <div>
-        <h1>Hello World</h1>
+    <div id="content">
+        <h1>Snakie</h1>
         <Provider store={store}>
             <Map nbLine={10} nbCol={10} timer={1000} />
         </Provider>

@@ -18,3 +18,7 @@
 .square.headSnake {
     background-color: green;
 }
+
+.square.food {
+    background-color: red;
+}

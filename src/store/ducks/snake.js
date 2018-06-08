@@ -1,10 +1,10 @@
 import { NEVER, interval } from "rxjs";
-import { mergeMap, delay } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { combineEpics, ofType } from "redux-observable";
 import { of } from 'rxjs/index'
 
 import { getUpdateHeadSnake, getUpdateSnake } from 'service/SnakeService'
-import { startGame, gameOver } from "store/ducks/game";
+import { startGame, gameOver, nextRound } from "store/ducks/game";
 
 // Actions
 export const SET_SNAKE = 'snakie/SNAKE/SET_SNAKE'
@@ -80,7 +80,6 @@ export const updateAxe = (value) => ({type: UPDATE_AXE, value})
 const moveSnackEpic = (action$, state$) => 
     action$.pipe(
         ofType(MOVE_SNAKE),
-        delay(state$.value.game.timer),
         mergeMap(() => {
             if (!state$.value.game.isOver) {
                 let headSnake = getUpdateHeadSnake(state$.value.snake.snake[0], state$.value.snake.axe, state$.value.snake.nextAxe)
@@ -95,7 +94,7 @@ const moveSnackEpic = (action$, state$) =>
                 }
                 // update all snake 
                 let snake = getUpdateSnake(headSnake, state$.value.snake.snake)
-                return of(setSnake(snake), moveSnake())
+                return of(setSnake(snake), nextRound())
             }
             return NEVER
         })
