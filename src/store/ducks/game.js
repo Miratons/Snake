@@ -146,7 +146,7 @@ const startGameEpic = (action$, state$) =>
         ofType(START_GAME),
         mergeMap(() => {
             if (!state$.value.game.isStart && !state$.value.game.isOver) {
-                return of(setStart(true), updateFood(), moveSnake())
+                return of(updateFood(), setStart(true), moveSnake())
             }
             return NEVER
         })
@@ -166,7 +166,7 @@ const updateFoodEpic = (action$, state$) =>
         ofType(UPDATE_FOOD),
         mergeMap(() => {
             let food = state$.value.game.food
-            if (!food || !food.x) {
+            if (!food || food.x === undefined ) {
                 food = getRandomFood(state$.value.snake.snake, state$.value.game.nbCol, state$.value.game.nbLine)
                 return of(setFood(food))
             }

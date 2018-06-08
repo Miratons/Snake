@@ -9,7 +9,7 @@ import './style.css'
 
 render (
     <div id="content">
-        <h1>Snakie</h1>
+        <h1>SNAKIE</h1>
         <Provider store={store}>
             <App />
         </Provider>
