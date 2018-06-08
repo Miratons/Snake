@@ -112,8 +112,7 @@ const startGameEpic = (action$, state$) =>
         ofType(START_GAME),
         // tap(() => console.log(state$)),
         mergeMap(() => {
-            console.log(state$)
-            if (!state$.value.isStart && !state$.value.isOver) {
+            if (!state$.value.game.isStart && !state$.value.game.isOver) {
                 return of(setStart(true), moveSnake())
             }
             return NEVER

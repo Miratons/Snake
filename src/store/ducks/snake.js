@@ -1,5 +1,5 @@
-import { NEVER } from "rxjs";
-import { mergeMap, first, last } from 'rxjs/operators';
+import { NEVER, interval } from "rxjs";
+import { mergeMap, delay } from 'rxjs/operators';
 import { combineEpics, ofType } from "redux-observable";
 import { of } from 'rxjs/index'
 
@@ -80,20 +80,24 @@ export const updateAxe = (value) => ({type: UPDATE_AXE, value})
 const moveSnackEpic = (action$, state$) => 
     action$.pipe(
         ofType(MOVE_SNAKE),
-        mergeMap(() => {       
-            let headSnake = getUpdateHeadSnake(state$.value.snake.snake[0], state$.value.snake.axe, state$.value.snake.nextAxe)
-            // stop game if snak out of map or eat him
-            let lastSnackWithoutHead = [].concat(state$.value.snake.snake)
-            lastSnackWithoutHead.splice(0, 1)
-            let index = lastSnackWithoutHead.findIndex((pos) => pos.x === headSnake.x && pos.y === headSnake.y)
-            if (index !== -1 
-                || headSnake.x < 0 || headSnake.x >= state$.value.game.nbCol
-                || headSnake.y < 0 || headSnake.y >= state$.value.game.nbLine) {
-                return of(gameOver())
+        delay(state$.value.game.timer),
+        mergeMap(() => {
+            if (!state$.value.game.isOver) {
+                let headSnake = getUpdateHeadSnake(state$.value.snake.snake[0], state$.value.snake.axe, state$.value.snake.nextAxe)
+                // stop game if snak out of map or eat him
+                let lastSnackWithoutHead = [].concat(state$.value.snake.snake)
+                lastSnackWithoutHead.splice(0, 1)
+                let index = lastSnackWithoutHead.findIndex((pos) => pos.x === headSnake.x && pos.y === headSnake.y)
+                if (index !== -1 
+                    || headSnake.x < 0 || headSnake.x >= state$.value.game.nbCol
+                    || headSnake.y < 0 || headSnake.y >= state$.value.game.nbLine) {
+                    return of(gameOver())
+                }
+                // update all snake 
+                let snake = getUpdateSnake(headSnake, state$.value.snake.snake)
+                return of(setSnake(snake), moveSnake())
             }
-            // update all snake 
-            let snake = getUpdateSnake(headSnake, state$.value.snake.snake)
-            return of(setSnake(snake))
+            return NEVER
         })
     )
 
