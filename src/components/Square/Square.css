@@ -20,5 +20,5 @@
 }
 
 .square.food {
-    background-color: red;
+    background: url('../../assets/sausage.png') no-repeat;
 }
