@@ -4,7 +4,7 @@ import { combineEpics, ofType } from "redux-observable";
 import { of } from 'rxjs/index'
 
 import { getUpdateHeadSnake, getUpdateSnake } from 'service/SnakeService'
-import { startGame, gameOver, nextRound } from "store/ducks/game";
+import { startGame, gameOver, nextRound, setFood } from "store/ducks/game";
 
 // Actions
 export const SET_SNAKE = 'snakie/SNAKE/SET_SNAKE'
@@ -17,12 +17,7 @@ export const UPDATE_AXE = 'snakie/SNAKE/UPDATE_AXE'
 // Reducer
 const initial = {
     snake: [
-        {x: 4, y:5},
-        {x: 5, y:5},
-        {x: 6, y:5},
-        {x: 7, y:5},
-        {x: 8, y:5},
-        {x: 9, y:5}
+        {x: 4, y:5}
     ],
     axe: null,
     nextAxe: null,
@@ -94,7 +89,12 @@ const moveSnackEpic = (action$, state$) =>
                 }
                 // update all snake 
                 let snake = getUpdateSnake(headSnake, state$.value.snake.snake)
-                return of(setSnake(snake), nextRound())
+                let food = {...state$.value.game.food}
+                if (headSnake.x === state$.value.game.food.x && headSnake.y === state$.value.game.food.y) {
+                    snake = [food].concat(snake)
+                    food = {}
+                }
+                return of(setSnake(snake), setFood(food), nextRound())
             }
             return NEVER
         })
