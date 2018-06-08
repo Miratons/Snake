@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Square from 'components/Square'
 
-import 'components/Line.css'
+import './Line.css'
 
 class Line extends Component {
     constructor(props) {
@@ -13,7 +13,7 @@ class Line extends Component {
     render() {
         var squares = [];
         for (let i = 0; i < this.props.nbCol; i++) {
-            squares.push(<Square key={i} x={this.props.x} y={i} snake={this.props.snake} />);
+            squares.push(<Square key={i} x={this.props.x} y={i} />);
         }
 
         return (
@@ -27,7 +27,6 @@ class Line extends Component {
 Line.propTypes = {
     x: PropTypes.number.isRequired,
     nbCol: PropTypes.number.isRequired,
-    snake: PropTypes.array.isRequired
 }
 
 export default Line
