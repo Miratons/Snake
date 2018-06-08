@@ -6,7 +6,6 @@ import Line from 'components/Line'
 class Map extends Component {
     constructor(props) {
         super(props)
-        // this.addSnakedSquare = this.addSnakedSquare.bind(this)
         this.handleKeyPress = this.handleKeyPress.bind(this)
     }
 
@@ -27,48 +26,18 @@ class Map extends Component {
     }
 
     componentDidMount() {
-        // this.init()
+
     }
 
     handleKeyPress(event) {
-
-        // var newAxe;
-        // let action = event.target.value ? event.target.value.substring(event.target.value.length - 1) : null
-        // event.target.value = null
-        // switch (action) {
-        //     case "z":
-        //         newAxe = "top"
-        //         break;
-
-        //     case "d":
-        //         newAxe = "right"
-        //         break;
-
-        //     case "s":
-        //         newAxe = "bottom"
-        //         break;
-            
-        //     case "q":
-        //         newAxe = "left"
-        //         break;
-            
-        //     default:
-        //         break;
-        // }
-        // // stock next direction in state
-        // if (newAxe && !this.state.nextAxe) {
-        //     this.setState({nextAxe: newAxe}, () => {
-        //         // launch game if is first choice
-        //         if (!this.state.isStart && !this.state.isOver) {
-        //             this.start()
-        //         }
-        //     })
-        // }
+        this.props.updateAxe(event.target.value)
+        event.target.value = null
     }
 }
 
 Map.propTypes = {
     nbLine: PropTypes.number.isRequired,
+    updateAxe: PropTypes.func.isRequired
 }
 
 export default Map

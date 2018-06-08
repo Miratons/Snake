@@ -1,9 +1,20 @@
+import { combineEpics, ofType } from 'redux-observable';
+import { mergeMap, timeInterval, tap } from 'rxjs/operators';
+import { NEVER } from 'rxjs'
+import { of } from 'rxjs/index'
+
+import { moveSnake } from 'store/ducks/snake'
+
 //Actions
-export const SET_NBLINE = 'my-todo/FILTERS/SET_NBLINE'
-export const SET_NBCOL = 'my-todo/FILTERS/SET_NBCOL'
-export const SET_TIMER = 'my-todo/FILTERS/SET_TIMER'
-export const SET_START = 'my-todo/FILTERS/SET_START'
-export const SET_OVER = 'my-todo/FILTERS/SET_OVER'
+export const SET_NBLINE = 'snakie/GAME/SET_NBLINE'
+export const SET_NBCOL = 'snakie/GAME/SET_NBCOL'
+export const SET_TIMER = 'snakie/GAME/SET_TIMER'
+export const SET_START = 'snakie/GAME/SET_START'
+export const SET_OVER = 'snakie/GAME/SET_OVER'
+// Actions Epics
+export const GAME_OVER = 'snakie/GAME/GAME_OVER'
+export const START_GAME = 'snakie/GAME/START_GAME'
+
 
 // Reducer
 const initial = {
@@ -74,20 +85,43 @@ export const setTimer = (timer) => ({
 })
 
 export const setStart = (isStart) => ({
-    type: SET_TIMER,
+    type: SET_START,
     isStart
 })
 
 export const setOver = (isOver) => ({
-    type: SET_TIMER,
+    type: SET_OVER,
     isOver
 })
 
-const gameOverEpic = (action$, state$) => {
+export const gameOver = () => ({type: GAME_OVER})
+
+export const startGame = () => ({type: START_GAME})
+
+// Epics
+const gameOverEpic = (action$, state$) => 
     action$.pipe(
-        ofType("GAME_OVER"),
+        ofType(GAME_OVER),
         mergeMap(() => {
             return of(setOver(true))
         })
     )
-}
+
+const startGameEpic = (action$, state$) =>
+    action$.pipe(
+        ofType(START_GAME),
+        // tap(() => console.log(state$)),
+        mergeMap(() => {
+            console.log(state$)
+            if (!state$.value.isStart && !state$.value.isOver) {
+                return of(setStart(true), moveSnake())
+            }
+            return NEVER
+        })
+    )
+
+
+export const epic = combineEpics(
+    gameOverEpic,
+    startGameEpic
+)

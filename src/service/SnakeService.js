@@ -25,11 +25,11 @@ export const getUpdateHeadSnake = (head, nextAxe, axe) => {
     return headSnake
 }
 
-export const getUpdateSnake = (headSnake, snack) => {
+export const getUpdateSnake = (headSnake, snake) => {
     // move all snak square
-    let snake = [headSnake];
+    let newSnake = [headSnake];
     for (let i = 1; i < snake.length; i++) {
-        snake.push(snake[i - 1])
+        newSnake.push(snake[i - 1])
     }
-    return snake
+    return newSnake
 }

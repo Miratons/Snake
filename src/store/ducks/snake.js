@@ -1,13 +1,18 @@
 import { NEVER } from "rxjs";
+import { mergeMap, first, last } from 'rxjs/operators';
+import { combineEpics, ofType } from "redux-observable";
+import { of } from 'rxjs/index'
 
 import { getUpdateHeadSnake, getUpdateSnake } from 'service/SnakeService'
+import { startGame, gameOver } from "store/ducks/game";
 
 // Actions
-export const SET_SNAKE = 'my-todo/FILTERS/SET_SNAKE'
-export const SET_AXE = 'my-todo/FILTERS/SET_AXE'
-export const SET_NEXT_AXE = 'my-todo/FILTERS/SET_NEXT_AXE'
+export const SET_SNAKE = 'snakie/SNAKE/SET_SNAKE'
+export const SET_AXE = 'snakie/SNAKE/SET_AXE'
+export const SET_NEXT_AXE = 'snakie/SNAKE/SET_NEXT_AXE'
 // Actions Epics
-export const MOVE_SNAKE = 'my-todo/FILTERS/MOVE_SNAKE'
+export const MOVE_SNAKE = 'snakie/SNAKE/MOVE_SNAKE'
+export const UPDATE_AXE = 'snakie/SNAKE/UPDATE_AXE'
 
 // Reducer
 const initial = {
@@ -42,7 +47,7 @@ export default function reducer (state = initial, action = {}) {
         case SET_NEXT_AXE:
             return {
                 ...state,
-                axe: action.axe
+                nextAxe: action.axe
             }
             break
         
@@ -67,23 +72,67 @@ export const setNextAxe = (nextAxe) => ({
     nextAxe
 })
 
-const moveSnackEpic = (action$, state$) => {
+export const moveSnake = () => ({type: MOVE_SNAKE})
+
+export const updateAxe = (value) => ({type: UPDATE_AXE, value})
+
+// Epics
+const moveSnackEpic = (action$, state$) => 
     action$.pipe(
-        ofType("MOVE_SNAKE"),
-        mergeMap(() => {
-            let headSnake = getUpdateHeadSnake(state$.snake.snake[0], state$.snake.axe, state$.snake.nextAxe)
+        ofType(MOVE_SNAKE),
+        mergeMap(() => {       
+            let headSnake = getUpdateHeadSnake(state$.value.snake.snake[0], state$.value.snake.axe, state$.value.snake.nextAxe)
             // stop game if snak out of map or eat him
-            let lastSnackWithoutHead = [].concat(state$.snake.snake)
+            let lastSnackWithoutHead = [].concat(state$.value.snake.snake)
             lastSnackWithoutHead.splice(0, 1)
             let index = lastSnackWithoutHead.findIndex((pos) => pos.x === headSnake.x && pos.y === headSnake.y)
             if (index !== -1 
-                || headSnake.x < 0 || headSnake.x >= state$.game.nbCol
-                || headSnake.y < 0 || headSnake.y >= state$.game.nbLine) {
+                || headSnake.x < 0 || headSnake.x >= state$.value.game.nbCol
+                || headSnake.y < 0 || headSnake.y >= state$.value.game.nbLine) {
                 return of(gameOver())
             }
             // update all snake 
-            let snake = getUpdateSnake(headSnake, state$.snake.snake)
+            let snake = getUpdateSnake(headSnake, state$.value.snake.snake)
             return of(setSnake(snake))
         })
     )
-}
+
+const updateAxeEpic = (action$, state$) =>
+    action$.pipe(
+        ofType(UPDATE_AXE),
+        mergeMap((data) => {
+            var newAxe;
+            let action = data.value ? data.value.substring(data.value.length - 1) : null
+            switch (action) {
+                case "z":
+                    newAxe = "top"
+                    break;
+
+                case "d":
+                    newAxe = "right"
+                    break;
+
+                case "s":
+                    newAxe = "bottom"
+                    break;
+                
+                case "q":
+                    newAxe = "left"
+                    break;
+                
+                default:
+                    break;
+            }
+            // stock next direction in state
+            if (newAxe && !state$.value.snake.nextAxe) {
+                return of(setAxe(newAxe), setNextAxe(null), startGame())
+            }
+            return NEVER
+        })
+    )
+
+
+export const epic = combineEpics(
+    moveSnackEpic,
+    updateAxeEpic
+)
