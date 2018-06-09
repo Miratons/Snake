@@ -1,0 +1,27 @@
+.informations {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.informations p {
+    text-align: center;
+    font-size: 26px;
+    margin-top: 200px;
+    padding: 20px;
+    color: #212121;
+    font-weight: bold;
+}
+
+.informations .information-bg {
+    background-color: black;
+    opacity: 0.7;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    cursor: pointer;
+}

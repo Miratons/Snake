@@ -1,0 +1,11 @@
+#game {
+    position: relative;
+}
+
+.grid {
+    cursor: pointer;
+}
+
+#inputSnake {
+    opacity: 0;
+}

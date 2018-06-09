@@ -25,7 +25,7 @@ export const UPDATE_FOOD = 'snakie/GAME/UPDATE_FOOD'
 const initial = {
     nbLine: 10,
     nbCol: 20,
-    timer: 500,
+    timer: 200,
     round: 1,
     food: {},
     isStart: false,
