@@ -13,7 +13,6 @@ Execute la fonction passé au Thunk qui aura pour signature :
         if (true) {
             dispatch(SUCCESS)
         }
-        ...
     }
 ```
 
