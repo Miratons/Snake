@@ -8,7 +8,7 @@ Reprend le fonctionnement d'un contrat d'interface.
 Permet de mettre en place un middleWare.
 Execute la fonction passé au Thunk qui aura pour signature :
 
-''' bash
+'''bash
     (dispatch) => {
         if (true) {
             dispatch(SUCCESS)
