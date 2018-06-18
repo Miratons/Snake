@@ -3,7 +3,7 @@
 Permet de définir la liste des attributs qu'un composant peut recevoir.
 Reprend le fonctionnement d'un contrat d'interface.
 
-#Thunk
+# Thunk
 
 Permet de mettre en place un middleWare.
 Execute la fonction passé au Thunk qui aura pour signature :
